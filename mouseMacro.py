@@ -5,13 +5,13 @@ import pyautogui
 import csv
 import time
 import os
-from datetime import datetime  # Import datetime
+from datetime import datetime
 
 recordedActions = []
 keyboardListener = None
 isRecording = False
 macrosDir = "Macros"
-lastActionTime = None  # Initialize lastActionTime
+lastActionTime = None
 
 def macroDir():
     if not os.path.exists(macrosDir):
@@ -20,7 +20,8 @@ def macroDir():
 def toggleRecording():
     global isRecording, keyboardListener, lastActionTime
     if not isRecording:
-        lastActionTime = datetime.now()  # Reset lastActionTime when starting
+        # Reset lastActionTime when starting
+        lastActionTime = datetime.now()
         keyboardListener = KeyboardListener(on_press=onPress)
         keyboardListener.start()
         toggleButton.config(text="Stop Recording")
@@ -46,10 +47,10 @@ def onPress(key):
     if lastActionTime is not None:
         delay = (current_time - lastActionTime).total_seconds()
 
-    if hasattr(key, 'char') and key.char == 'g':  # Updated condition
-        recordedActions.append((x, y, 0, delay))  # No click, with delay
-    elif hasattr(key, 'char') and key.char == 'f':  # Updated condition
-        recordedActions.append((x, y, 1, delay))  # Click, with delay
+    if hasattr(key, 'char') and key.char == 'g': # No click
+        recordedActions.append((x, y, 0, delay))  
+    elif hasattr(key, 'char') and key.char == 'f':  # Click
+        recordedActions.append((x, y, 1, delay))  
 
     lastActionTime = current_time
     def readCSV(filePath):
@@ -62,7 +63,7 @@ def playMacro():
     if filePath:
         actions = readCSV(filePath)
         for x, y, click, delay in actions:
-            pyautogui.moveTo(x, y, duration=delay)  # Use 'delay' for the duration of the move
+            pyautogui.moveTo(x, y, duration=delay)
             if click:
                 pyautogui.click()
 
