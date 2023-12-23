@@ -53,32 +53,32 @@ def onPress(key):
         recordedActions.append((x, y, 1, delay))  
 
     lastActionTime = current_time
-    def readCSV(filePath):
-    with open(filePath, 'r') as file:
-        reader = csv.reader(file)
-        return [(int(x), int(y), int(click), float(delay)) for x, y, click, delay in reader]
-
-def playMacro():
-    filePath = filedialog.askopenfilename(initialdir=macrosDir, title="Select Macro File", filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*")))
-    if filePath:
-        actions = readCSV(filePath)
-        for x, y, click, delay in actions:
-            pyautogui.moveTo(x, y, duration=delay)
-            if click:
-                pyautogui.click()
-
-root = tk.Tk()
-root.title("Macro Recorder")
-root.geometry("300x200")
-root.configure(bg="#151515")
-
-toggleButton = tk.Button(root, text="Start Recording", command=toggleRecording)
-toggleButton.pack()
-
-playButton = tk.Button(root, text="Play Macro", command=playMacro)
-playButton.pack()
-
-statusLabel = tk.Label(root, text="Press 'Start Recording' to begin")
-statusLabel.pack()
-
-root.mainloop()
+     def readCSV(filePath):
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            return [(int(x), int(y), int(click), float(delay)) for x, y, click, delay in reader]
+    
+    def playMacro():
+        filePath = filedialog.askopenfilename(initialdir=macrosFolder, title="Select Macro File", filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*")))
+        if filePath:
+            actions = readCSV(filePath)
+            for x, y, click, delay in actions:
+                pyautogui.moveTo(x, y, duration=delay)  # Use 'delay' for the duration of the move
+                if click:
+                    pyautogui.click()
+    
+    root = tk.Tk()
+    root.title("Macro Recorder")
+    root.geometry("300x200")
+    root.configure(bg="#151515")
+    
+    toggleButton = tk.Button(root, text="Start Recording", command=toggleRecording)
+    toggleButton.pack()
+    
+    playButton = tk.Button(root, text="Play Macro", command=playMacro)
+    playButton.pack()
+    
+    statusLabel = tk.Label(root, text="Press 'Start Recording' to begin")
+    statusLabel.pack()
+    
+    root.mainloop()
